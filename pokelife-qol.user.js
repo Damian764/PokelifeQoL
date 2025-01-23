@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Pokelife QoL
-// @namespace    https://github.com/Damian764/PokelifeQoL
-// @version      1.1.1
+// @namespace    Pokelife
+// @version      1.1.2
 // @license      MIT
 // @homepageURL  https://github.com/Damian764/PokelifeQoL
 // @updateURL    https://github.com/Damian764/PokelifeQoL/raw/refs/heads/main/pokelife-qol.user.js
