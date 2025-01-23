@@ -106,7 +106,6 @@ const generateSortButton = () => {
 
 	button.append(createIcon('↑', 'asc-ico'), createIcon('↓', 'desc-ico'))
 	button.classList.add('btn', 'btn-success', 'col-xs-12', 'btn-sort')
-	button.style.marginTop = '10px'
 
 	button.addEventListener('click', (event) => {
 		event.preventDefault()
