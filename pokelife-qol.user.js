@@ -2,12 +2,15 @@
 // @name         Pokelife QoL
 // @namespace    https://github.com/Damian764/PokelifeQoL
 // @version      1.1.1
+// @license      MIT
+// @homepageURL  https://github.com/Damian764/PokelifeQoL
 // @updateURL    https://github.com/Damian764/PokelifeQoL/raw/refs/heads/main/pokelife-qol.user.js
 // @downloadURL  https://github.com/Damian764/PokelifeQoL/raw/refs/heads/main/pokelife-qol.user.js
 // @supportURL   https://github.com/Damian764/PokelifeQoL/issues
 // @description  Custom quality of life improvements for Pokelife game.
 // @author       Damian Gęsicki
 // @tag          QoL
+// @tags         QoL
 // @match        https://*.pokelife.pl/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=pokelife.pl
 // @grant        none
