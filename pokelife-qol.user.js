@@ -161,8 +161,7 @@ const sortPokemonByValue = () => {
 	const fragment = document.createDocumentFragment()
 
 	// Append sorted elements to the fragment
-	sortedPokemons.forEach((pokemon) => fragment.appendChild(pokemon))
-
+	sortedPokemons.forEach((pokemon) => fragment.appendChild(pokemon.cloneNode(true)))
 	// Clear existing elements and append the fragment
 	removeElements(pokemonElements)
 	wrapper.appendChild(fragment)
