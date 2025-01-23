@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Pokelife QoL
 // @namespace    Pokelife
-// @version      1.1.2
+// @version      1.2.0
 // @license      MIT
 // @homepageURL  https://github.com/Damian764/PokelifeQoL
 // @updateURL    https://github.com/Damian764/PokelifeQoL/raw/refs/heads/main/pokelife-qol.user.js
@@ -32,6 +32,13 @@ const removeElements = (removable) => {
 
 const clearModifiedClass = () => {
 	document.querySelector(`.${global.className}`)?.classList.remove(global.className)
+}
+
+const createIcon = (text, className) => {
+	const icon = document.createElement('b')
+	icon.textContent = text
+	icon.classList.add(className)
+	return icon
 }
 
 // Screen Check Functions
@@ -70,6 +77,18 @@ const generateStyleSheet = () => {
             background: #404040;
             border-radius: 4px 4px 0 0;
         }
+        .btn-sort {
+            margin-top: 10px;
+        }
+        .btn-sort > b {
+            display: none
+        }
+        [sort-direction='asc'] .btn-sort .asc-ico {
+            display: inline;
+        }
+        [sort-direction='desc'] .btn-sort .desc-ico {
+            display: inline;
+        }
     `
 	return style
 }
@@ -83,13 +102,16 @@ const generateNameElement = (name) => {
 
 const generateSortButton = () => {
 	const button = document.createElement('button')
-	button.innerText = 'Sortuj według ceny'
-	button.classList.add('btn', 'btn-success', 'col-xs-12')
-	button.style.marginTop = '10px'
+	button.innerText = 'Sortuj według ceny '
+
+	button.append(createIcon('↑', 'asc-ico'), createIcon('↓', 'desc-ico'))
+	button.classList.add('btn', 'btn-success', 'col-xs-12', 'btn-sort')
+
 	button.addEventListener('click', (event) => {
 		event.preventDefault()
 		sortPokemonByValue()
 	})
+
 	return button
 }
 
@@ -154,20 +176,30 @@ const displayTotalPrice = () => {
 }
 
 const sortPokemonByValue = () => {
-	const wrapper = document.querySelector(
-		'#glowne_okno form[action*="sprzedaj&zaznaczone"] div[data-toggle="buttons"]'
-	)
-	const pokemonElements = wrapper.querySelectorAll('label')
-	const sortedPokemons = [...pokemonElements].sort((a, b) => fetchPokemonCost(b) - fetchPokemonCost(a))
+	const wrapper = document.querySelector('#glowne_okno form[action*="sprzedaj&zaznaczone"]')
+	const pokemonContainer = wrapper.querySelector('div[data-toggle="buttons"]')
+	const pokemonElements = Array.from(wrapper.querySelectorAll('label'))
+	const sortDirection = wrapper.getAttribute('sort-direction') === 'desc' ? 'asc' : 'desc'
+
+	// Sort Pokémon elements based on cost
+	const sortedPokemons = pokemonElements.sort((a, b) => {
+		return sortDirection === 'asc'
+			? fetchPokemonCost(a) - fetchPokemonCost(b)
+			: fetchPokemonCost(b) - fetchPokemonCost(a)
+	})
+
+	// Update sort direction attribute
+	wrapper.setAttribute('sort-direction', sortDirection)
 
 	// Create a Document Fragment to batch DOM updates
 	const fragment = document.createDocumentFragment()
 
 	// Append sorted elements to the fragment
 	sortedPokemons.forEach((pokemon) => fragment.appendChild(pokemon.cloneNode(true)))
+
 	// Clear existing elements and append the fragment
 	removeElements(pokemonElements)
-	wrapper.appendChild(fragment)
+	pokemonContainer.appendChild(fragment)
 }
 
 const insertSortButton = () => {
