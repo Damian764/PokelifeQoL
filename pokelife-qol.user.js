@@ -83,7 +83,7 @@ const generateNameElement = (name) => {
 
 const generateSortButton = () => {
 	const button = document.createElement('button')
-	button.innerText = 'Sortuj według ceny'
+	button.innerText = 'Sortuj według wartości'
 	button.classList.add('btn', 'btn-success', 'col-xs-12')
 	button.style.marginTop = '10px'
 	button.addEventListener('click', (event) => {
