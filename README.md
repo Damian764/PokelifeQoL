@@ -31,24 +31,33 @@ Once installed, the script will automatically run on the Pokelife game website. 
 - **Pokémon Selection Screen**: Automatically displays experience points and other details for each Pokémon.
 - **Market Screen**: Adds a button to sort Pokémon by price and displays the total selling price.
 
-## Development
+## Reporting Issues
 
-### Code Structure
+If you encounter any bugs or issues while using this script, please report them so they can be fixed! Use the following template for detailed reports. You can [create a new issue here](../../issues/new).
 
-- **Utility Functions**: Helper functions for common tasks, such as removing elements and clearing classes.
-- **Screen Check Functions**: Functions to determine the current screen context (e.g., Pokémon selection or market screen).
-- **DOM Manipulation Functions**: Functions to create and apply custom styles and elements.
-- **Data Fetching Functions**: Functions to retrieve Pokémon details and costs.
-- **UI Enhancement Functions**: Functions to enhance the user interface with additional information and controls.
+### Bug Report Template
+```markdown
+### Bug Description
+A clear and concise description of what the bug is.
 
-### Key Functions
+### Steps to Reproduce
+1. List the steps to reproduce the issue.
+2. Be as detailed as possible.
 
-- `removeElements`: Removes specified elements from the DOM.
-- `isPokemonSelectionScreen`: Checks if the current screen is the Pokémon selection screen.
-- `generateStyleSheet`: Creates and returns a stylesheet for custom styles.
-- `fetchPokemonDetails`: Retrieves details for a specific Pokémon.
-- `sortPokemonByValue`: Sorts Pokémon by their market value using a Document Fragment for efficient DOM updates.
+### Expected Behavior
+What should happen if the script works correctly?
 
+### Actual Behavior
+What happens instead?
+
+### Environment
+- **Browser**: (e.g., Chrome Version 131.0.6778.265, Opera GX Core:116.0.5366.54, etc.)
+- **UserScript Manager**: (e.g., Violentmonkey, Tampermonkey, Greasemonkey)
+- **UserScript Version**: (e.g., 1.0.0, 1.2.1, etc.)
+
+### Additional Information
+Add any other context or screenshots that might help in resolving the issue.
+```
 ## Contributing
 
 Contributions to this project are welcome. If you have suggestions for improvements or new features, please feel free to submit a pull request or open an issue.
