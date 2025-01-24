@@ -103,9 +103,7 @@ const generateNameElement = (name) => {
 const generateSortButton = () => {
 	const button = document.createElement('button')
 	button.innerText = 'Sortuj według wartości'
-	button.classList.add('btn', 'btn-success', 'col-xs-12')
-	button.style.marginTop = '10px'
-	button.append(createIcon('↑', 'asc-ico'), createIcon('↓', 'desc-ico'))
+	button.append(createIcon(' ↑', 'asc-ico'), createIcon(' ↓', 'desc-ico'))
 	button.classList.add('btn', 'btn-success', 'col-xs-12', 'btn-sort')
 	button.addEventListener('click', (event) => {
 		event.preventDefault()
