@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Pokelife QoL
 // @namespace    Pokelife
-// @version      1.3.0
+// @version      1.3.1
 // @license      MIT
 // @homepageURL  https://github.com/Damian764/PokelifeQoL
 // @updateURL    https://github.com/Damian764/PokelifeQoL/raw/refs/heads/main/pokelife-qol.user.js
@@ -23,11 +23,8 @@ const global = {
 // Utility Functions
 const removeElements = (removable) => {
 	if (!removable) return
-	if ('length' in removable) {
-		Array.from(removable).forEach((element) => element.remove())
-	} else {
-		removable.remove()
-	}
+	const elements = 'length' in removable ? Array.from(removable) : [removable]
+	elements.forEach((element) => element.remove())
 }
 
 const createIcon = (text, className) => {
@@ -116,22 +113,37 @@ const generateSortButton = () => {
 
 // Data Fetching Functions
 const fetchPokemonDetails = (id) => {
-	const sidebar = document.querySelector('.stan-pokemon').closest('tbody')
-	const pokemonElement = sidebar.querySelector(`tr:nth-child(${id + 1}) > td:nth-child(2)`)
-	const pokemonName = pokemonElement.querySelector('b').innerText
-	const [pokemonHP, pokemonEXP] = [...pokemonElement.querySelectorAll('.progress')]
-	return { pokemonName, pokemonHP, pokemonEXP }
+	try {
+		const sidebar = document.querySelector('.stan-pokemon').closest('tbody')
+		const pokemonElement = sidebar.querySelector(`tr:nth-child(${id + 1}) > td:nth-child(2)`)
+		const pokemonName = pokemonElement.querySelector('b').innerText
+		const [pokemonHP, pokemonEXP] = [...pokemonElement.querySelectorAll('.progress')]
+		return { pokemonName, pokemonHP, pokemonEXP }
+	} catch (error) {
+		console.error('Error fetching Pokémon details:', error)
+		return {}
+	}
 }
 
 const fetchBattleReadyPokemon = () => {
-	return document
-		.querySelector('#glowne_okno .panel-body .btn-wybor_pokemona')
-		.closest("div[style='row']")
-		.querySelectorAll(':scope > div')
+	try {
+		return document
+			.querySelector('#glowne_okno .panel-body .btn-wybor_pokemona')
+			.closest("div[style='row']")
+			.querySelectorAll(':scope > div')
+	} catch (error) {
+		console.error('Error fetching battle-ready Pokémon:', error)
+		return []
+	}
 }
 
 const fetchPokemonCost = (element) => {
-	return parseInt(element.textContent.split(' ')[1].split('\t').pop())
+	try {
+		return parseInt(element.textContent.split(' ')[1].split('\t').pop())
+	} catch (error) {
+		console.error('Error fetching Pokémon cost:', error)
+		return 0
+	}
 }
 
 // UI Enhancement Functions
