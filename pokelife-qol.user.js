@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Pokelife QoL
 // @namespace    Pokelife
-// @version      1.3.1
+// @version      1.3.2
 // @license      MIT
 // @homepageURL  https://github.com/Damian764/PokelifeQoL
 // @updateURL    https://github.com/Damian764/PokelifeQoL/raw/refs/heads/main/pokelife-qol.user.js
@@ -20,13 +20,34 @@ const global = {
 	className: 'pokelife-QoL',
 }
 
+const SELECTORS = {
+	mainElement: '#glowne_okno',
+	pokemonSelectionTitle: '#glowne_okno center',
+	pokemonMarketTitle: '#glowne_okno .panel-heading',
+	pokemonButtonContainer: '.panel-body .btn-wybor_pokemona',
+	pokemonMarket: '#glowne_okno form[action*="sprzedaj&zaznaczone"] .panel-body div[data-toggle="buttons"]',
+	totalPriceElement: 'div.text-center',
+	sortButtonWrapper: '#glowne_okno form[action*="sprzedaj&zaznaczone"] button[href*="sprzedaj&wszystkie"]',
+}
+
 // Utility Functions
+
+/**
+ * Removes elements from the DOM.
+ * @param {NodeList|Element} removable - The elements to remove.
+ */
 const removeElements = (removable) => {
 	if (!removable) return
 	const elements = 'length' in removable ? Array.from(removable) : [removable]
 	elements.forEach((element) => element.remove())
 }
 
+/**
+ * Creates an icon element.
+ * @param {string} text - The text content of the icon.
+ * @param {string} className - The class name to add to the icon.
+ * @returns {HTMLElement} The created icon element.
+ */
 const createIcon = (text, className) => {
 	const icon = document.createElement('b')
 	icon.textContent = text
@@ -34,18 +55,23 @@ const createIcon = (text, className) => {
 	return icon
 }
 
+/**
+ * Adds a QoL class to an element.
+ * @param {HTMLElement} element - The element to add the class to.
+ * @param {string} className - The class name to add.
+ */
 const addQoLClass = (element, className) => {
 	element.classList.add(`${global.className}-${className}`)
 }
 
 // Screen Check Functions
 const isPokemonSelectionScreen = () => {
-	const titleNode = document.querySelector('#glowne_okno center')
+	const titleNode = document.querySelector(SELECTORS.pokemonSelectionTitle)
 	return titleNode?.innerText.toLowerCase().includes('wybierz pokemona') ?? false
 }
 
 const isPokemonMarketScreen = () => {
-	const titleNode = document.querySelector('#glowne_okno .panel-heading')
+	const titleNode = document.querySelector(SELECTORS.pokemonMarketTitle)
 	return titleNode?.innerText.toLowerCase().includes('hodowla') ?? false
 }
 
@@ -149,7 +175,7 @@ const fetchPokemonCost = (element) => {
 // UI Enhancement Functions
 const displayXPInformation = () => {
 	if (!isPokemonSelectionScreen()) return
-	const mainElement = document.querySelector('#glowne_okno')
+	const mainElement = document.querySelector(SELECTORS.mainElement)
 	const availablePokemon = [...fetchBattleReadyPokemon()]
 	setPokemonElementClass(mainElement)
 	improveSelectionUI(availablePokemon)
@@ -157,7 +183,7 @@ const displayXPInformation = () => {
 
 const setPokemonElementClass = (mainElement) => {
 	const pokemonButtonContainer = mainElement
-		.querySelector('.panel-body .btn-wybor_pokemona')
+		.querySelector(SELECTORS.pokemonButtonContainer)
 		.closest("div[style='row']")
 	addQoLClass(pokemonButtonContainer, 'enhanced-display')
 }
@@ -174,11 +200,9 @@ const improveSelectionUI = (availablePokemon) => {
 
 const displayTotalPrice = () => {
 	if (!isPokemonMarketScreen()) return
-	const pokemonMarket = document.querySelector(
-		'#glowne_okno form[action*="sprzedaj&zaznaczone"] .panel-body div[data-toggle="buttons"]'
-	)
+	const pokemonMarket = document.querySelector(SELECTORS.pokemonMarket)
 	if (!pokemonMarket) return
-	const pokemonTotalPriceElement = pokemonMarket.querySelector('div.text-center')
+	const pokemonTotalPriceElement = pokemonMarket.querySelector(SELECTORS.totalPriceElement)
 	if (!pokemonTotalPriceElement) return
 	pokemonMarket.prepend(pokemonTotalPriceElement)
 }
@@ -211,9 +235,7 @@ const sortPokemonByValue = () => {
 }
 
 const insertSortButton = () => {
-	const wrapper = document.querySelector(
-		'#glowne_okno form[action*="sprzedaj&zaznaczone"] button[href*="sprzedaj&wszystkie"]'
-	)
+	const wrapper = document.querySelector(SELECTORS.sortButtonWrapper)
 	wrapper.after(generateSortButton())
 }
 
