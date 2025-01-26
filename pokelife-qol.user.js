@@ -30,10 +30,6 @@ const removeElements = (removable) => {
 	}
 }
 
-const clearModifiedClass = () => {
-	document.querySelector(`.${global.className}`)?.classList.remove(global.className)
-}
-
 const createIcon = (text, className) => {
 	const icon = document.createElement('b')
 	icon.textContent = text
@@ -140,7 +136,6 @@ const displayXPInformation = () => {
 	const availablePokemon = [...fetchBattleReadyPokemon()]
 	setPokemonElementClass(mainElement)
 	improveSelectionUI(availablePokemon)
-	mainElement.classList.add(global.className)
 }
 
 const setPokemonElementClass = (mainElement) => {
@@ -162,7 +157,6 @@ const improveSelectionUI = (availablePokemon) => {
 
 const displayTotalPrice = () => {
 	if (!isPokemonMarketScreen()) return
-	const mainElement = document.querySelector('#glowne_okno')
 	const pokemonMarket = document.querySelector(
 		'#glowne_okno form[action*="sprzedaj&zaznaczone"] .panel-body div[data-toggle="buttons"]'
 	)
@@ -170,7 +164,6 @@ const displayTotalPrice = () => {
 	const pokemonTotalPriceElement = pokemonMarket.querySelector('div.text-center')
 	if (!pokemonTotalPriceElement) return
 	pokemonMarket.prepend(pokemonTotalPriceElement)
-	mainElement.classList.add(global.className)
 }
 
 const sortPokemonByValue = () => {
@@ -221,10 +214,6 @@ const pokemonSelectionScreenEnhancements = () => {
 }
 // Initialization
 const initializeScript = () => {
-	const mainWindow = document.querySelector('#glowne_okno')
-	if (mainWindow.classList.contains(global.className)) {
-		return clearModifiedClass()
-	}
 	document.head.append(generateStyleSheet())
 	pokemonSelectionScreenEnhancements()
 	marketScreenEnhancements()
