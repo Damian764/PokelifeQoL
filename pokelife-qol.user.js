@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Pokelife QoL
 // @namespace    Pokelife
-// @version      1.2.1
+// @version      1.3.0
 // @license      MIT
 // @homepageURL  https://github.com/Damian764/PokelifeQoL
 // @updateURL    https://github.com/Damian764/PokelifeQoL/raw/refs/heads/main/pokelife-qol.user.js
@@ -17,7 +17,7 @@
 // ==/UserScript==
 
 const global = {
-	className: 'QoL-modified',
+	className: 'pokelife-QoL',
 }
 
 // Utility Functions
@@ -37,6 +37,10 @@ const createIcon = (text, className) => {
 	return icon
 }
 
+const addQoLClass = (element, className) => {
+	element.classList.add(`${global.className}-${className}`)
+}
+
 // Screen Check Functions
 const isPokemonSelectionScreen = () => {
 	const titleNode = document.querySelector('#glowne_okno center')
@@ -52,17 +56,17 @@ const isPokemonMarketScreen = () => {
 const generateStyleSheet = () => {
 	const style = document.createElement('style')
 	style.innerHTML = `
-        .QoL-better-pokemon-details {
+        .${global.className}-pokemon-details {
             font-size: 1.2rem;
             font-weight: bold;
             text-wrap: balance;
         }
-        .QoL-better-pokemon-btn > button {
+        .${global.className}-pokemon-btn > button {
             height: 100%;
             display: grid;
             grid-template-rows: auto auto 20px 20px;
         }
-        .QoL-better-display {
+        .${global.className}-enhanced-display {
             display: flex;
             flex-wrap: wrap;
             justify-content: space-around;
@@ -73,16 +77,16 @@ const generateStyleSheet = () => {
             background: #404040;
             border-radius: 4px 4px 0 0;
         }
-        .btn-sort {
-            margin-top: 10px;
+        .${global.className}-btn-sort {
+            margin-top: 5px;
         }
-        .btn-sort > b {
+        .${global.className}-btn-sort > b {
             display: none
         }
-        [sort-direction='asc'] .btn-sort .asc-ico {
+        [sort-direction='asc'] .${global.className}-btn-sort .asc-ico {
             display: inline;
         }
-        [sort-direction='desc'] .btn-sort .desc-ico {
+        [sort-direction='desc'] .${global.className}-btn-sort .desc-ico {
             display: inline;
         }
     `
@@ -91,7 +95,7 @@ const generateStyleSheet = () => {
 
 const generateNameElement = (name) => {
 	const nameElement = document.createElement('p')
-	nameElement.classList.add('QoL-better-pokemon-details')
+	addQoLClass(nameElement, 'pokemon-details')
 	nameElement.innerText = name
 	return nameElement
 }
@@ -100,7 +104,8 @@ const generateSortButton = () => {
 	const button = document.createElement('button')
 	button.innerText = 'Sortuj według wartości'
 	button.append(createIcon(' ↑', 'asc-ico'), createIcon(' ↓', 'desc-ico'))
-	button.classList.add('btn', 'btn-success', 'col-xs-12', 'btn-sort')
+	button.classList.add('btn', 'btn-success', 'col-xs-12')
+	addQoLClass(button, 'btn-sort')
 	button.addEventListener('click', (event) => {
 		event.preventDefault()
 		sortPokemonByValue()
@@ -142,12 +147,12 @@ const setPokemonElementClass = (mainElement) => {
 	const pokemonButtonContainer = mainElement
 		.querySelector('.panel-body .btn-wybor_pokemona')
 		.closest("div[style='row']")
-	pokemonButtonContainer.classList.add('QoL-better-display')
+	addQoLClass(pokemonButtonContainer, 'enhanced-display')
 }
 
 const improveSelectionUI = (availablePokemon) => {
 	availablePokemon.forEach((pokemonElement, index) => {
-		pokemonElement.classList.add('QoL-better-pokemon-btn')
+		addQoLClass(pokemonElement, 'pokemon-btn')
 		const { pokemonName, pokemonHP, pokemonEXP } = fetchPokemonDetails(index)
 		const pokemonButton = pokemonElement.querySelector('button')
 		pokemonButton.prepend(generateNameElement(pokemonName))
@@ -214,7 +219,6 @@ const pokemonSelectionScreenEnhancements = () => {
 }
 // Initialization
 const initializeScript = () => {
-	document.head.append(generateStyleSheet())
 	pokemonSelectionScreenEnhancements()
 	marketScreenEnhancements()
 }
@@ -223,6 +227,8 @@ const initializeScript = () => {
 	'use strict'
 	const mainElement = document.querySelector('#glowne_okno')
 	if (!mainElement) return
+	document.head.append(generateStyleSheet())
+	addQoLClass(document.body, 'initialized')
 	const config = { childList: true, subtree: false, attributes: false }
 	const observer = new MutationObserver(initializeScript)
 	observer.observe(mainElement, config)
