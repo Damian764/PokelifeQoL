@@ -113,6 +113,14 @@ const generateStyleSheet = () => {
         [sort-direction='desc'] .${global.className}-btn-sort.active .desc-ico {
             display: inline;
         }
+            .row[data-toggle="buttons"] {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .btn-hodowla b {
+            display: block;
+            border-bottom: 1px solid;
+        }
     `
 	return style
 }
