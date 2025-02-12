@@ -25,9 +25,10 @@ const SELECTORS = {
 	pokemonSelectionTitle: '#glowne_okno center',
 	pokemonMarketTitle: '#glowne_okno .panel-heading',
 	pokemonButtonContainer: '.panel-body .btn-wybor_pokemona',
+	pokemonMarketContainer: '#glowne_okno form[action*="sprzedaj&zaznaczone"]',
 	pokemonMarket: '#glowne_okno form[action*="sprzedaj&zaznaczone"] .panel-body div[data-toggle="buttons"]',
 	totalPriceElement: 'div.text-center',
-	sortButtonWrapper: '#glowne_okno form[action*="sprzedaj&zaznaczone"] button[href*="sprzedaj&wszystkie"]',
+	sortButtonWrapper: '#glowne_okno form[action*="sprzedaj&zaznaczone"] .panel-body .row',
 }
 
 // Utility Functions
@@ -106,10 +107,10 @@ const generateStyleSheet = () => {
         .${global.className}-btn-sort > b {
             display: none
         }
-        [sort-direction='asc'] .${global.className}-btn-sort .asc-ico {
+        [sort-direction='asc'] .${global.className}-btn-sort.active .asc-ico {
             display: inline;
         }
-        [sort-direction='desc'] .${global.className}-btn-sort .desc-ico {
+        [sort-direction='desc'] .${global.className}-btn-sort.active .desc-ico {
             display: inline;
         }
     `
@@ -123,18 +124,30 @@ const generateNameElement = (name) => {
 	return nameElement
 }
 
-const generateSortButton = () => {
+const generateSortButton = (label, sortBy) => {
 	const button = document.createElement('button')
-	button.innerText = 'Sortuj według wartości'
+	button.innerText = label
 	button.append(createIcon(' ↑', 'asc-ico'), createIcon(' ↓', 'desc-ico'))
-	button.classList.add('btn', 'btn-success', 'col-xs-12')
+	button.classList.add('btn', 'btn-success', 'col-xs-6')
 	addQoLClass(button, 'btn-sort')
 	button.addEventListener('click', (event) => {
 		event.preventDefault()
-		sortPokemonByValue()
+		document.querySelector(`.${global.className}-btn-sort.active`)?.classList.remove('active')
+		console.log(document.querySelector(`.${global.className}-btn-sort.active`))
+		event.target.classList.add('active')
+		sortPokemonBy(sortBy)
 	})
-
 	return button
+}
+
+const addIndexToPokemon = () => {
+	const wrapper = document.querySelector(SELECTORS.pokemonMarketContainer)
+	const pokemonElements = Array.from(wrapper.querySelectorAll('label'))
+	pokemonElements.forEach((elem, index) => {
+		if (!elem.hasAttribute('data-original-index')) {
+			elem.setAttribute('data-original-index', index)
+		}
+	})
 }
 
 // Data Fetching Functions
@@ -168,6 +181,22 @@ const fetchPokemonCost = (element) => {
 		return parseInt(element.textContent.split(' ')[1].split('\t').pop())
 	} catch (error) {
 		console.error('Error fetching Pokémon cost:', error)
+		return 0
+	}
+}
+const fetchPokemonName = (element) => {
+	try {
+		return element.querySelector('b').innerText
+	} catch (error) {
+		console.error('Error fetching Pokémon name:', error)
+		return ''
+	}
+}
+const fetchPokemonLevel = (element) => {
+	try {
+		return parseInt(element.textContent.split(' ')[1].split('poz')[0])
+	} catch (error) {
+		console.error('Error fetching Pokémon level:', error)
 		return 0
 	}
 }
@@ -206,37 +235,99 @@ const displayTotalPrice = () => {
 	if (!pokemonTotalPriceElement) return
 	pokemonMarket.prepend(pokemonTotalPriceElement)
 }
-
-const sortPokemonByValue = () => {
-	const wrapper = document.querySelector('#glowne_okno form[action*="sprzedaj&zaznaczone"]')
+const sortPokemonBy = (sortBy) => {
+	const wrapper = document.querySelector(SELECTORS.pokemonMarketContainer)
 	const pokemonContainer = wrapper.querySelector('div[data-toggle="buttons"]')
 	const pokemonElements = Array.from(wrapper.querySelectorAll('label'))
-	const sortDirection = wrapper.getAttribute('sort-direction') === 'desc' ? 'asc' : 'desc'
 
-	// Sort Pokémon elements based on cost
-	const sortedPokemons = pokemonElements.sort((a, b) => {
-		return sortDirection === 'asc'
-			? fetchPokemonCost(a) - fetchPokemonCost(b)
-			: fetchPokemonCost(b) - fetchPokemonCost(a)
-	})
+	// Get current settings
+	const currentSortBy = wrapper.getAttribute('sort-by')
+	const sortDirection =
+		currentSortBy === sortBy ? (wrapper.getAttribute('sort-direction') === 'desc' ? 'asc' : 'desc') : 'desc'
 
-	// Update sort direction attribute
+	// Sort Pokémon elements based on sortBy parameter
+	switch (sortBy) {
+		case 'value':
+			pokemonElements.sort((a, b) => {
+				const costA = fetchPokemonCost(a)
+				const costB = fetchPokemonCost(b)
+				const diff = costA - costB
+				if (diff === 0) {
+					// If values are equal, sort by the original index (assuming it is stored as a data attribute)
+					return (
+						parseInt(a.getAttribute('data-original-index')) -
+						parseInt(b.getAttribute('data-original-index'))
+					)
+				}
+				return sortDirection === 'asc' ? diff : -diff
+			})
+			break
+		case 'name':
+			pokemonElements.sort((a, b) => {
+				const nameA = fetchPokemonName(a)
+				const nameB = fetchPokemonName(b)
+				const diff = nameA.localeCompare(nameB)
+				if (diff === 0) {
+					// If names are equal, sort by the original index (assuming it is stored as a data attribute)
+					return (
+						parseInt(a.getAttribute('data-original-index')) -
+						parseInt(b.getAttribute('data-original-index'))
+					)
+				}
+				return sortDirection === 'asc' ? diff : -diff
+			})
+			break
+		case 'level':
+			pokemonElements.sort((a, b) => {
+				const levelA = fetchPokemonLevel(a)
+				const levelB = fetchPokemonLevel(b)
+				const diff = levelA - levelB
+				if (diff === 0) {
+					// If levels are equal, sort by the original index (assuming it is stored as a data attribute)
+					return (
+						parseInt(a.getAttribute('data-original-index')) -
+						parseInt(b.getAttribute('data-original-index'))
+					)
+				}
+				return sortDirection === 'asc' ? diff : -diff
+			})
+			break
+		case 'date':
+		default:
+			pokemonElements.sort((a, b) => {
+				return sortDirection === 'asc'
+					? a.getAttribute('data-original-index') - b.getAttribute('data-original-index')
+					: b.getAttribute('data-original-index') - a.getAttribute('data-original-index')
+			})
+			break
+	}
+
+	// Update attributes to reflect the new sort settings
 	wrapper.setAttribute('sort-direction', sortDirection)
+	wrapper.setAttribute('sort-by', sortBy)
 
-	// Create a Document Fragment to batch DOM updates
 	const fragment = document.createDocumentFragment()
+	pokemonElements.forEach((pokemon) => fragment.appendChild(pokemon.cloneNode(true)))
 
-	// Append sorted elements to the fragment
-	sortedPokemons.forEach((pokemon) => fragment.appendChild(pokemon.cloneNode(true)))
-
-	// Clear existing elements and append the fragment
 	removeElements(pokemonElements)
 	pokemonContainer.appendChild(fragment)
 }
 
-const insertSortButton = () => {
+const insertSortButtons = () => {
 	const wrapper = document.querySelector(SELECTORS.sortButtonWrapper)
-	wrapper.after(generateSortButton())
+	if (!wrapper) return
+
+	const config = [
+		{ label: 'Sortuj po dacie', sortBy: 'date' },
+		{ label: 'Sortuj po wartości', sortBy: 'value' },
+		{ label: 'Sortuj po nazwie', sortBy: 'name' },
+		{ label: 'Sortuj po poziomie', sortBy: 'level' },
+	]
+
+	config.forEach(({ label, sortBy }) => {
+		const button = generateSortButton(label, sortBy)
+		wrapper.appendChild(button)
+	})
 }
 
 // Enhancement Functions for Specific Screens
@@ -244,7 +335,8 @@ const insertSortButton = () => {
 const marketScreenEnhancements = () => {
 	if (!isPokemonMarketScreen()) return
 	displayTotalPrice()
-	insertSortButton()
+	addIndexToPokemon()
+	insertSortButtons()
 }
 
 const pokemonSelectionScreenEnhancements = () => {
