@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Pokelife QoL
 // @namespace    Pokelife
-// @version      1.4.0
+// @version      1.4.1
 // @license      MIT
 // @homepageURL  https://github.com/Damian764/PokelifeQoL
 // @updateURL    https://github.com/Damian764/PokelifeQoL/raw/refs/heads/main/pokelife-qol.user.js
@@ -136,7 +136,7 @@ const generateSortButton = (label, sortBy) => {
 	const button = document.createElement('button')
 	button.innerText = label
 	button.append(createIcon(' ↑', 'asc-ico'), createIcon(' ↓', 'desc-ico'))
-	button.classList.add('btn', 'btn-success', 'col-xs-6')
+	button.classList.add('btn', 'btn-success', 'col-xs-12', 'col-sm-6')
 	addQoLClass(button, 'btn-sort')
 	button.addEventListener('click', (event) => {
 		event.preventDefault()
