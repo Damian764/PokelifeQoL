@@ -15,7 +15,7 @@ The Pokelife QoL (Quality of Life) UserScript is designed to enhance the user ex
 To use this UserScript, you need a browser extension that supports UserScripts, such as **Violentmonkey**, Tampermonkey, or Greasemonkey. We recommend using **Violentmonkey** for the best experience. Once you have the extension installed, follow these steps:
 
 1. Install [Violentmonkey](https://violentmonkey.github.io/) (recommended), [Tampermonkey](https://www.tampermonkey.net/), or [Greasemonkey](https://www.greasespot.net/).
-2. Open the [RAW file](https://github.com/Damian764/PokelifeQoL/raw/refs/heads/main/pokelife-qol.user.js) in your browser.
+2. Open the [RAW file](https://github.com/Damian764/PokelifeQoL/raw/refs/heads/main/pokelife-qol/dist/pokelife-qol.user.js) in your browser.
 3. Install the script using your chosen browser extension.
 
 Alternatively, you can
