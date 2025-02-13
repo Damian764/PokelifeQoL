@@ -1,14 +1,14 @@
 // ==UserScript==
 // @name         Pokelife QoL
 // @namespace    npm/vite-plugin-monkey
-// @version      1.5.0
+// @version      2.0.0
 // @author       Damian Gesicki
 // @description  Custom quality of life improvements for Pokelife game.
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=pokelife.pl
 // @homepageURL  https://github.com/Damian764/PokelifeQoL
 // @supportURL   https://github.com/Damian764/PokelifeQoL/issues
-// @downloadURL  https://github.com/Damian764/PokelifeQoL/raw/refs/heads/main/pokelife-qol.user.js
-// @updateURL    https://github.com/Damian764/PokelifeQoL/raw/refs/heads/main/pokelife-qol.user.js
+// @downloadURL  https://github.com/Damian764/PokelifeQoL/raw/refs/heads/main/pokelife-qol/dist/pokelife-qol.user.js
+// @updateURL    https://github.com/Damian764/PokelifeQoL/raw/refs/heads/main/pokelife-qol/dist/pokelife-qol.user.js
 // @match        https://gra.pokelife.pl/*
 // @require      https://cdn.jsdelivr.net/npm/react@18.3.1/umd/react.production.min.js
 // @require      https://cdn.jsdelivr.net/npm/react-dom@18.3.1/umd/react-dom.production.min.js
