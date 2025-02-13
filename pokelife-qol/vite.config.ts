@@ -13,8 +13,8 @@ export default defineConfig({
                 namespace: 'npm/vite-plugin-monkey',
                 version: '2.0.0',
                 homepageURL: 'https://github.com/Damian764/PokelifeQoL',
-                updateURL: 'https://github.com/Damian764/PokelifeQoL/raw/refs/heads/main/pokelife-qol/dist/pokelife-qol.user.js',
-                downloadURL: 'https://github.com/Damian764/PokelifeQoL/raw/refs/heads/main/pokelife-qol/dist/pokelife-qol.user.js',
+                updateURL: 'https://github.com/Damian764/PokelifeQoL/raw/refs/heads/main/pokelife-qol.user.js',
+                downloadURL: 'https://github.com/Damian764/PokelifeQoL/raw/refs/heads/main/pokelife-qol.user.js',
                 supportURL: 'https://github.com/Damian764/PokelifeQoL/issues',
                 description: 'Custom quality of life improvements for Pokelife game.',
                 author: "Damian Gesicki",
@@ -33,4 +33,8 @@ export default defineConfig({
             },
         }),
     ],
+    build: {
+        outDir: './../',
+        emptyOutDir: false,
+    },
 });
