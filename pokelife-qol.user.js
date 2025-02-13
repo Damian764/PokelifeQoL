@@ -4,8 +4,9 @@
 // @version      1.4.1
 // @license      MIT
 // @homepageURL  https://github.com/Damian764/PokelifeQoL
-// @updateURL    https://github.com/Damian764/PokelifeQoL/raw/refs/heads/main/pokelife-qol.user.js
-// @downloadURL  https://github.com/Damian764/PokelifeQoL/raw/refs/heads/main/pokelife-qol.user.js
+// LEGACY CODE USED TO UPDATE THE SCRIPT BY THE USERSCRIPT MANAGER
+// @updateURL    https://github.com/Damian764/PokelifeQoL/raw/refs/heads/main/pokelife-qol/dist/pokelife-qol.user.js
+// @downloadURL  https://github.com/Damian764/PokelifeQoL/raw/refs/heads/main/pokelife-qol/dist/pokelife-qol.user.js
 // @supportURL   https://github.com/Damian764/PokelifeQoL/issues
 // @description  Custom quality of life improvements for Pokelife game.
 // @author       Damian Gęsicki
