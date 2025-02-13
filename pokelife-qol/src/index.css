@@ -1,0 +1,47 @@
+.pokelife-QoL-pokemon-details {
+	font-size: 1.2rem;
+	font-weight: bold;
+	text-wrap: balance;
+}
+.pokelife-QoL-pokemon-btn > button {
+	height: 100%;
+	display: grid;
+	grid-template-rows: auto auto 20px 20px;
+}
+.pokelife-QoL-enhanced-display {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-around;
+}
+:not(.shopItem) > [aria-label*='balle'] div {
+	width: 100%;
+	border-bottom: 1px solid #595959;
+	background: #404040;
+	border-radius: 4px 4px 0 0;
+}
+.pokelife-QoL-btn-sort {
+	margin-top: 5px;
+}
+.pokelife-QoL-btn-sort > b {
+	display: none;
+}
+[sort-direction='asc'] .pokelife-QoL-btn-sort.active .asc-ico {
+	display: inline;
+}
+[sort-direction='desc'] .pokelife-QoL-btn-sort.active .desc-ico {
+	display: inline;
+}
+.row[data-toggle='buttons'] {
+	display: flex;
+	flex-wrap: wrap;
+}
+.btn-hodowla b {
+	display: block;
+	border-bottom: 1px solid;
+}
+#shoutbox .panel .tab {
+	display: none !important;
+}
+#shoutbox .panel .activeTab {
+	display: block !important;
+}
