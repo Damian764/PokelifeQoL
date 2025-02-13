@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Pokelife QoL
 // @namespace    Pokelife
-// @version      1.4.1
+// @version      1.5.0
 // @license      MIT
 // @homepageURL  https://github.com/Damian764/PokelifeQoL
 // LEGACY CODE USED TO UPDATE THE SCRIPT BY THE USERSCRIPT MANAGER
