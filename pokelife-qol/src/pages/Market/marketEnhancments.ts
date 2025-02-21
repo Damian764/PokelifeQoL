@@ -1,7 +1,7 @@
-import { SELECTORS } from "../../constants"
-import SortButton from "../../components/SortButton/SortButton"
 import React from "react";
 import { createRoot } from "react-dom/client";
+import { SELECTORS } from "../../constants"
+import { SortButton } from "../../components/SortButton";
 
 const displayTotalPrice = (): void => {
     const pokemonMarket = document.querySelector(SELECTORS.pokemonMarket);
