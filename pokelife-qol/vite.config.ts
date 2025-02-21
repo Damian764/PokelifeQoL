@@ -11,7 +11,7 @@ export default defineConfig({
             userscript: {
                 name: 'Pokelife QoL',
                 namespace: 'npm/vite-plugin-monkey',
-                version: '2.0.0',
+                version: '2.1.0',
                 homepageURL: 'https://github.com/Damian764/PokelifeQoL',
                 updateURL: 'https://github.com/Damian764/PokelifeQoL/raw/refs/heads/main/pokelife-qol.user.js',
                 downloadURL: 'https://github.com/Damian764/PokelifeQoL/raw/refs/heads/main/pokelife-qol.user.js',

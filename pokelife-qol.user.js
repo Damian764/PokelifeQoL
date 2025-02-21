@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Pokelife QoL
 // @namespace    npm/vite-plugin-monkey
-// @version      2.0.0
+// @version      2.1.0
 // @author       Damian Gesicki
 // @description  Custom quality of life improvements for Pokelife game.
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=pokelife.pl
@@ -85,7 +85,9 @@
     mainElement: "#glowne_okno",
     pokemonSelectionTitle: "#glowne_okno center",
     pokemonMarketTitle: "#glowne_okno .panel-heading",
-    pokemonButtonContainer: ".panel-body .btn-wybor_pokemona",
+    pokemonBackpackTitle: "#glowne_okno .panel-heading",
+    pokemonBackpackButtons: "#glowne_okno .panel-body .thumbnail-plecak",
+    pokemonButtonContainer: "#glowne_okno .panel-body .btn-wybor_pokemona",
     pokemonMarketContainer: '#glowne_okno form[action*="sprzedaj&zaznaczone"]',
     pokemonMarket: '#glowne_okno form[action*="sprzedaj&zaznaczone"] .panel-body div[data-toggle="buttons"]',
     totalPriceElement: "div.text-center",
@@ -98,6 +100,10 @@
   const isPokemonMarketScreen = () => {
     const titleNode = document.querySelector(SELECTORS.pokemonMarketTitle);
     return (titleNode == null ? void 0 : titleNode.innerText.toLowerCase().includes("hodowla")) || false;
+  };
+  const isPokemonBackpackScreen = () => {
+    const titleNode = document.querySelector(SELECTORS.pokemonBackpackTitle);
+    return (titleNode == null ? void 0 : titleNode.innerText.toLowerCase().includes("plecak")) || false;
   };
   const fetchPokemonDetails = (id) => {
     try {
@@ -275,7 +281,7 @@
   const Icon = ({ text, classes }) => {
     return /* @__PURE__ */ jsxRuntimeExports.jsx("b", { className: classes, children: text });
   };
-  const handleClick = (sortBy) => (event) => {
+  const handleClick$1 = (sortBy) => (event) => {
     var _a;
     event.preventDefault();
     (_a = document.querySelector(`.${CLASSNAMES.default}-btn-sort.active`)) == null ? void 0 : _a.classList.remove("active");
@@ -283,7 +289,7 @@
     sortPokemonBy(sortBy);
   };
   const SortButton = ({ label, sortBy }) => {
-    return /* @__PURE__ */ jsxRuntimeExports.jsxs("button", { className: `btn btn-success col-xs-12 col-sm-6 ${CLASSNAMES.default}-btn-sort`, onClick: handleClick(sortBy), children: [
+    return /* @__PURE__ */ jsxRuntimeExports.jsxs("button", { className: `btn btn-success col-xs-12 col-sm-6 ${CLASSNAMES.default}-btn-sort`, onClick: handleClick$1(sortBy), children: [
       label,
       " ",
       /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { text: "↑", classes: "asc-ico" }),
@@ -330,9 +336,58 @@
     displayTotalPrice();
     insertSortButtons();
   };
+  const handleClick = (amount) => (event) => {
+    event.preventDefault();
+    const parent = event.currentTarget.parentElement;
+    if (!parent) return;
+    const previousSibling = parent.previousSibling;
+    if (!previousSibling || previousSibling.tagName !== "INPUT") return console.error("No sibling found");
+    const form = parent.closest("form");
+    if (!form) return;
+    const submit = form.querySelector('button[type="submit"]');
+    if (!submit) return;
+    previousSibling.value = String(amount);
+    submit.click();
+  };
+  const ModalButton = ({ amount }) => {
+    return /* @__PURE__ */ jsxRuntimeExports.jsxs("button", { className: "btn btn-warning", onClick: handleClick(amount), children: [
+      "Użyj wszystkich (",
+      amount,
+      ")"
+    ] });
+  };
+  const addMaxValueToInputFields = () => {
+    const buttons = document.querySelectorAll(SELECTORS.pokemonBackpackButtons);
+    if (!buttons) return console.error("No backpack buttons found");
+    buttons.forEach((button) => {
+      var _a, _b;
+      const target = button.getAttribute("data-target");
+      if (!target) return;
+      const caption = button.querySelector(".caption");
+      if (!caption) return;
+      const amount = (_b = (_a = caption.textContent) == null ? void 0 : _a.match(/\d+/)) == null ? void 0 : _b[0];
+      if (!amount || isNaN(Number(amount))) return;
+      const modal = document.querySelector(target);
+      if (!modal) return;
+      const input = modal.querySelector("input.form-control");
+      if (!input) return;
+      input.setAttribute("max", amount);
+      const buttonContainer = document.createElement("span");
+      const root = clientExports.createRoot(buttonContainer);
+      buttonContainer.classList.add("input-group-btn");
+      root.render(React.createElement(ModalButton, { amount: Number(amount) }));
+      input.after(buttonContainer);
+    });
+  };
+  const BackpackPage = () => {
+    if (!isPokemonBackpackScreen()) return;
+    addMaxValueToInputFields();
+    return null;
+  };
   const initialize = () => {
     SelectionPage();
     MarketPage();
+    BackpackPage();
   };
   const DomManipulator = () => {
     React.useEffect(() => {
